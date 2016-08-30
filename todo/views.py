@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 
-from .forms import UserForm
+def home_page(request):
+    return render(request, 'todo/home_page.html', {})
 
 def get_name(request):
     if request.method == 'POST':
