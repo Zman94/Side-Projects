@@ -17,35 +17,6 @@ centerX = 0
 centerY = 0
 window_aspect = 0
 
-class pointNode(object):
-    def __init__(self, x=0, y=0, z=0):
-        self.x = x
-        self.y = y
-        self.z = z
-
-    def rotateX(self,rad):
-        # return xy
-        x = self.x-centerX
-        y = self.y-centerY
-        self.y = (y*math.cos(rad)-self.z*math.sin(rad))+centerY
-        self.z = y*math.sin(rad)+self.z*math.cos(rad)
-        return
-        final = list()
-        x = self.x-centerX
-        y = self.y-centerY
-        z = self.z
-
-        d = math.hypot(y,z)
-        theta = math.atan2(y,z)+radians
-        self.y = centerY+d*math.sin(theta)
-        self.z = d*math.cos(theta)
-
-    def project(self, fov=256, viewer_distance=4):
-        factor = fov/(viewer_distance+self.z)
-        x = self.x*factor+centerX
-        y = -self.y*factor+centerY
-        return [x,y]
-
 class terrain(object):
     def __init__(self, width=600, height=600):
         global cols, rows, centerX, centerY, window_aspect
@@ -63,30 +34,37 @@ class terrain(object):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
+
             self.screen.fill((0,0,0))
-            points3d = list()
-            points3d.append(pointNode(50,50,0))
-            points3d.append(pointNode(100,50,0))
-            points3d.append(pointNode(100,100,0))
-            points3d.append(pointNode(50,100,0))
 
-            # for point in points3d:
-            #     point.rotateX(0)
-
-            points = list()
-            for point in points3d:
-                points.append(point.project())
-
-            # for y in range(rows):
-            #     points = list()
-            #     for x in range(cols):
-            #         points.append(rotateX([x*scl,y*scl],self.centerX, self.centerY,.25))
-            #         points.append(rotateX([x*scl,(y+1)*scl],self.centerX,self.centerY,.25))
-                    # pygame.draw.rect(self.screen,(255,255,255),[x*scl,y*scl,scl,scl],1)
-            pygame.draw.lines(self.screen,(255,255,255),True,points,2)
+            for y in range(rows+1):
+                points = list()
+                for x in range(cols+1):
+                    # points.append((x*scl,y*scl))
+                    # points.append((x*scl,(y+1)*scl))
+                    points.append(rotateX(x*scl,y*scl,math.pi/4))
+                    points.append(rotateX(x*scl,(y+1)*scl,math.pi/4))
+                # pygame.draw.rect(self.screen,(255,255,255),[0,y*scl,self.width,1],1)
+                pygame.draw.lines(self.screen,(255,255,255),False,points,1)
+                points = [rotateX(0,y*scl,math.pi/4),rotateX(self.width,y*scl,math.pi/4),rotateX(self.width,y*scl+1,math.pi/4),rotateX(0,y*scl+1,math.pi/4)]
+                pygame.draw.lines(self.screen,(255,255,255),True,points,1)
                 # pygame.draw.line(self.screen,(255,255,255),rotateX([0,y*scl],self.centerX,self.centerY,.25),rotateX([self.width,y*scl],self.centerX,self.centerY,.25))
 
             pygame.display.flip()
+
+def rotateX(x,y,radians):
+    # origX = x
+    origY = y
+    y = y-centerY
+    x = x-centerX
+    d = y
+    theta = radians
+    y = centerY + d * math.cos(theta)
+    xChange = int(((1-((y/centerY)*math.sin(theta))/.5))*x)
+    x+=(centerX-xChange)
+    # x = origX
+    # y = origY
+    return (x,y)
 
 def main():
     pygame.init()
