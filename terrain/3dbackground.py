@@ -22,11 +22,11 @@ centerX = 0
 centerY = 0
 window_aspect = 0
 
-terrain = [[]]
+terrainz = list()
 
 class terrain(object):
     def __init__(self, width=600, height=600):
-        global cols, rows, centerX, centerY, window_aspect, terrain
+        global cols, rows, centerX, centerY, window_aspect, terrainz
         self.width = width
         self.height = height
         self.screen = pygame.display.set_mode((self.width,self.height))
@@ -35,9 +35,14 @@ class terrain(object):
         centerX = (w)/2
         centerY = (h)/2
         window_aspect = width/height
+        yoff = 0
         for y in range(rows):
-            for x in range(cols)
-                terrain = [[noise.pnoise2(-10,10,3) for x in range(cols)] for y in range(rows)]
+            xoff = 0
+            terrainz.append(list())
+            for x in range(cols):
+                terrainz[y].append(100*noise.pnoise2(xoff,yoff))
+                xoff+=.07
+            yoff+=.07
 
     def terrainLoop(self):
         while True:
@@ -51,19 +56,17 @@ class terrain(object):
                 x = 0
                 points = list()
                 for x in range(cols-1):
-                    # points.append((x*scl,y*scl))
-                    # points.append((x*scl,(y+1)*scl))
-                    tempV = np.dot(rotation_matrix([1,0,0],2*math.pi/3), [x*scl-centerX,-(y*scl-centerY),terrain[y][x]])
+                    tempV = np.dot(rotation_matrix([1,0,0],2*math.pi/3), [x*scl-centerX,-(y*scl-centerY),terrainz[y][x]])
                     tempV[0]*=(1.5-(tempV[2]/600))
                     tempV[1]*=(2-(tempV[2]/600))
                     points.append([int(tempV[0]+centerX+translate),int(tempV[1]+centerY)+translate/3])
 
-                    tempV = np.dot(rotation_matrix([1,0,0],2*math.pi/3), [x*scl-centerX,-((y+1)*scl-centerY),terrain[y+1][x]])
+                    tempV = np.dot(rotation_matrix([1,0,0],2*math.pi/3), [x*scl-centerX,-((y+1)*scl-centerY),terrainz[y+1][x]])
                     tempV[0]*=(1.5-(tempV[2]/600))
                     tempV[1]*=(2-(tempV[2]/600))
                     points.append([int(tempV[0]+centerX+translate),int(tempV[1]+centerY)+translate/3])
 
-                    tempV = np.dot(rotation_matrix([1,0,0],2*math.pi/3), [(x+1)*scl-centerX,-(y*scl-centerY),terrain[y][x+1]])
+                    tempV = np.dot(rotation_matrix([1,0,0],2*math.pi/3), [(x+1)*scl-centerX,-(y*scl-centerY),terrainz[y][x+1]])
                     tempV[0]*=(1.5-(tempV[2]/600))
                     tempV[1]*=(2-(tempV[2]/600))
                     points.append([int(tempV[0]+centerX+translate),int(tempV[1]+centerY)+translate/3])
