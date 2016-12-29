@@ -24,11 +24,8 @@
 from __future__ import print_function
 import noise
 
-xoff = 0.0
-for x in range(10):
-    yoff = 0.0
-    for y in range(10):
-        print(noise.pnoise2(xoff,yoff), end=" ")
-        yoff+=.01
-    xoff+=.01
-    print()
+print(noise.pnoise2(0.1,0), end=" ")
+print(noise.pnoise2(0.1,0.1), end=" ")
+print(noise.pnoise2(0.1,0.2), end=" ")
+print(noise.pnoise2(0.1,0.3), end=" ")
+print(noise.pnoise2(0.1,0.4), end=" ")
