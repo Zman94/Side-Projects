@@ -102,39 +102,78 @@ def main():
     pygame.display.set_caption("Chess")
     setup()
 
-    BK1 = king(4,0, BKG)
-    BQ1 = queen(3,0, BQG)
-    BR1 = rook(0,0, BRG)
-    BR2 = rook(7,0, BRG)
-    BB1 = bishop(2,0, BBG)
-    BB2 = bishop(5,0, BBG)
-    BN1 = knight(1,0, BNG)
-    BN2 = knight(6,0, BNG)
-    BP1 = pawn(0,1, BPG)
-    BP2 = pawn(1,1, BPG)
-    BP3 = pawn(2,1, BPG)
-    BP4 = pawn(3,1, BPG)
-    BP5 = pawn(4,1, BPG)
-    BP6 = pawn(5,1, BPG)
-    BP7 = pawn(6,1, BPG)
-    BP8 = pawn(7,1, BPG)
+    blackPieces = []
+    blackPieces.append(king(4,0, BKG))
+    blackPieces.append(queen(3,0, BQG))
+    blackPieces.append(rook(0,0, BRG))
+    blackPieces.append(rook(7,0, BRG))
+    blackPieces.append(bishop(2,0, BBG))
+    blackPieces.append(bishop(5,0, BBG))
+    blackPieces.append(knight(6,0, BNG))
+    blackPieces.append(knight(1,0, BNG))
+    blackPieces.append(pawn(0,1, BPG))
+    blackPieces.append(pawn(1,1, BPG))
+    blackPieces.append(pawn(2,1, BPG))
+    blackPieces.append(pawn(3,1, BPG))
+    blackPieces.append(pawn(4,1, BPG))
+    blackPieces.append(pawn(5,1, BPG))
+    blackPieces.append(pawn(6,1, BPG))
+    blackPieces.append(pawn(7,1, BPG))
 
-    WK1 = king(4,7, WKG)
-    WQ1 = queen(3,7, WQG)
-    WR1 = rook(0,7, WRG)
-    WR2 = rook(7,7, WRG)
-    WB1 = bishop(2,7, WBG)
-    WB2 = bishop(5,7, WBG)
-    WN1 = knight(1,7, WNG)
-    WN2 = knight(6,7, WNG)
-    WP1 = pawn(0,6, WPG)
-    WP2 = pawn(1,6, WPG)
-    WP3 = pawn(2,6, WPG)
-    WP4 = pawn(3,6, WPG)
-    WP5 = pawn(4,6, WPG)
-    WP6 = pawn(5,6, WPG)
-    WP7 = pawn(6,6, WPG)
-    WP8 = pawn(7,6, WPG)
+    whitePieces = []
+    whitePieces.append(king(4,7, WKG))
+    whitePieces.append(queen(3,7, WQG))
+    whitePieces.append(rook(0,7, WRG))
+    whitePieces.append(rook(7,7, WRG))
+    whitePieces.append(bishop(2,7, WBG))
+    whitePieces.append(bishop(5,7, WBG))
+    whitePieces.append(knight(6,7, WNG))
+    whitePieces.append(knight(1,7, WNG))
+    whitePieces.append(pawn(0,6, WPG))
+    whitePieces.append(pawn(1,6, WPG))
+    whitePieces.append(pawn(2,6, WPG))
+    whitePieces.append(pawn(3,6, WPG))
+    whitePieces.append(pawn(4,6, WPG))
+    whitePieces.append(pawn(5,6, WPG))
+    whitePieces.append(pawn(6,6, WPG))
+    whitePieces.append(pawn(7,6, WPG))
+
+    # BK1 = king(4,0, BKG)
+    # BQ1 = queen(3,0, BQG)
+    # BR1 = rook(0,0, BRG)
+    # BR2 = rook(7,0, BRG)
+    # BB1 = bishop(2,0, BBG)
+    # BB2 = bishop(5,0, BBG)
+    # BN1 = knight(1,0, BNG)
+    # BN2 = knight(6,0, BNG)
+    # BP1 = pawn(0,1, BPG)
+    # BP2 = pawn(1,1, BPG)
+    # BP3 = pawn(2,1, BPG)
+    # BP4 = pawn(3,1, BPG)
+    # BP5 = pawn(4,1, BPG)
+    # BP6 = pawn(5,1, BPG)
+    # BP7 = pawn(6,1, BPG)
+    # BP8 = pawn(7,1, BPG)
+    # WK1 = king(4,7, WKG)
+    # WQ1 = queen(3,7, WQG)
+    # WR1 = rook(0,7, WRG)
+    # WR2 = rook(7,7, WRG)
+    # WB1 = bishop(2,7, WBG)
+    # WB2 = bishop(5,7, WBG)
+    # WN1 = knight(1,7, WNG)
+    # WN2 = knight(6,7, WNG)
+    # WP1 = pawn(0,6, WPG)
+    # WP2 = pawn(1,6, WPG)
+    # WP3 = pawn(2,6, WPG)
+    # WP4 = pawn(3,6, WPG)
+    # WP5 = pawn(4,6, WPG)
+    # WP6 = pawn(5,6, WPG)
+    # WP7 = pawn(6,6, WPG)
+    # WP8 = pawn(7,6, WPG)
+
+    mouse_x, mouse_y = -1,-1
+    whiteTurn = True #White's turn first
+    highlightSquare = False
 
     #Game Loop#
     while True:
@@ -146,52 +185,44 @@ def main():
             #     #click code
         screen.fill((0,0,0))
         darkSquare = True
+
+        #Get area of mouse click
+        if pygame.mouse.get_pressed()[0]:
+            mouse_x = pygame.mouse.get_pos()[0]
+            mouse_y = pygame.mouse.get_pos()[1]
+
+        #Test to see if area clicked should be highlighted. Based on occupied square by player
+        highlightSquare = False
+        if not whiteTurn:
+            for piece in blackPieces:
+                if piece.x*width/boardSize < mouse_x and (piece.x+1)*width/boardSize > mouse_x and piece.y*height/boardSize < mouse_y and (piece.y+1)*height/boardSize > mouse_y:
+                    highlightSquare = True
+                    break
+        else:
+            for piece in whitePieces:
+                if piece.x*width/boardSize < mouse_x and (piece.x+1)*width/boardSize > mouse_x and piece.y*height/boardSize < mouse_y and (piece.y+1)*height/boardSize > mouse_y:
+                    highlightSquare = True
+                    break
+
         for x in range(boardSize):
             darkSquare = not darkSquare
             for y in range(boardSize):
-                if darkSquare:
+                if x*width/boardSize < mouse_x and (x+1)*width/boardSize > mouse_x and y*height/boardSize < mouse_y and (y+1)*height/boardSize > mouse_y and mouse_x != -1 and highlightSquare:
+                    pygame.draw.rect(screen, (131,151,106), [width/boardSize*x,height/boardSize*y,width/boardSize, height/boardSize])
+                    darkSquare = not darkSquare
+
+                elif darkSquare:
                     pygame.draw.rect(screen, (191,136,99), [width/boardSize*x,height/boardSize*y,width/boardSize, height/boardSize])
                     darkSquare = False
                 else:
                     pygame.draw.rect(screen, (240,217,181), [width/boardSize*x,height/boardSize*y,width/boardSize, height/boardSize])
                     darkSquare = True
 
-        screen.blit(BK1.graphic,(BK1.x*width/boardSize,BK1.y*height/boardSize))
-        screen.blit(BQ1.graphic,(BQ1.x*width/boardSize,BQ1.y*height/boardSize))
-        screen.blit(BR1.graphic,(BR1.x*width/boardSize,BR1.y*height/boardSize))
-        screen.blit(BR2.graphic,(BR2.x*width/boardSize,BR2.y*height/boardSize))
-        screen.blit(BB1.graphic,(BB1.x*width/boardSize,BB1.y*height/boardSize))
-        screen.blit(BB2.graphic,(BB2.x*width/boardSize,BB2.y*height/boardSize))
-        screen.blit(BN1.graphic,(BN1.x*width/boardSize,BN1.y*height/boardSize))
-        screen.blit(BN2.graphic,(BN2.x*width/boardSize,BN2.y*height/boardSize))
-
-        screen.blit(BP1.graphic,(BP1.x*width/boardSize,BP1.y*height/boardSize))
-        screen.blit(BP2.graphic,(BP2.x*width/boardSize,BP2.y*height/boardSize))
-        screen.blit(BP3.graphic,(BP3.x*width/boardSize,BP3.y*height/boardSize))
-        screen.blit(BP4.graphic,(BP4.x*width/boardSize,BP4.y*height/boardSize))
-        screen.blit(BP5.graphic,(BP5.x*width/boardSize,BP5.y*height/boardSize))
-        screen.blit(BP6.graphic,(BP6.x*width/boardSize,BP6.y*height/boardSize))
-        screen.blit(BP7.graphic,(BP7.x*width/boardSize,BP7.y*height/boardSize))
-        screen.blit(BP8.graphic,(BP8.x*width/boardSize,BP8.y*height/boardSize))
-
-
-        screen.blit(WK1.graphic,(WK1.x*width/boardSize,WK1.y*height/boardSize))
-        screen.blit(WQ1.graphic,(WQ1.x*width/boardSize,WQ1.y*height/boardSize))
-        screen.blit(WR1.graphic,(WR1.x*width/boardSize,WR1.y*height/boardSize))
-        screen.blit(WR2.graphic,(WR2.x*width/boardSize,WR2.y*height/boardSize))
-        screen.blit(WB1.graphic,(WB1.x*width/boardSize,WB1.y*height/boardSize))
-        screen.blit(WB2.graphic,(WB2.x*width/boardSize,WB2.y*height/boardSize))
-        screen.blit(WN1.graphic,(WN1.x*width/boardSize,WN1.y*height/boardSize))
-        screen.blit(WN2.graphic,(WN2.x*width/boardSize,WN2.y*height/boardSize))
-
-        screen.blit(WP1.graphic,(WP1.x*width/boardSize,WP1.y*height/boardSize))
-        screen.blit(WP2.graphic,(WP2.x*width/boardSize,WP2.y*height/boardSize))
-        screen.blit(WP3.graphic,(WP3.x*width/boardSize,WP3.y*height/boardSize))
-        screen.blit(WP4.graphic,(WP4.x*width/boardSize,WP4.y*height/boardSize))
-        screen.blit(WP5.graphic,(WP5.x*width/boardSize,WP5.y*height/boardSize))
-        screen.blit(WP6.graphic,(WP6.x*width/boardSize,WP6.y*height/boardSize))
-        screen.blit(WP7.graphic,(WP7.x*width/boardSize,WP7.y*height/boardSize))
-        screen.blit(WP8.graphic,(WP8.x*width/boardSize,WP8.y*height/boardSize))
+        ### Draw Pieces ###
+        for piece in blackPieces:
+            screen.blit(piece.graphic,(piece.x*width/boardSize,piece.y*height/boardSize))
+        for piece in whitePieces:
+            screen.blit(piece.graphic,(piece.x*width/boardSize,piece.y*height/boardSize))
 
         pygame.display.flip()
 
