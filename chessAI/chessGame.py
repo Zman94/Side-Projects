@@ -15,6 +15,7 @@ boardSize = 8
 
 BKG,BQG,BRG,BBG,BNG,BPG=None,None,None,None,None,None
 WKG,WQG,WRG,WBG,WNG,WPG=None,None,None,None,None,None
+dotG=None
 
 BKrect,BQrect,BRrect,BBrect,BNrect,BPrect=None,None,None,None,None,None
 WKrect,WQrect,WRrect,WBrect,WNrect,WPrect=None,None,None,None,None,None
@@ -26,35 +27,36 @@ class piece(object):
         self.moves = movement
         self.fullBoard = fullBoard
         self.pawn = pawn
-        self.home = True
+        self.start = True
         self.graphic = graphic
+        self.enabled = False
 
 class pawn(piece):
     def __init__(self, xPos, yPos, graphic):
-        piece.__init__(self, xPos, yPos, graphic, ["y1","y2","y1x1c"], False, True)
+        piece.__init__(self, xPos, yPos, graphic, ["01n","02s","11c"], False, True)
 
 class knight(piece):
     def __init__(self, xPos, yPos, graphic):
-        piece.__init__(self, xPos, yPos, graphic, ["y1x2","y2x1"], False)
+        piece.__init__(self, xPos, yPos, graphic, ["12n","21n"], False)
 
 class bishop(piece):
     def __init__(self, xPos, yPos, graphic):
-        piece.__init__(self, xPos, yPos, graphic, ["y1x1"])
+        piece.__init__(self, xPos, yPos, graphic, ["11n"])
 
 class rook(piece):
     def __init__(self, xPos, yPos, graphic):
-        piece.__init__(self, xPos, yPos, graphic, ["y1","x1"])
+        piece.__init__(self, xPos, yPos, graphic, ["01n","10n"])
 
 class queen(piece):
     def __init__(self, xPos, yPos, graphic):
-        piece.__init__(self, xPos, yPos, graphic, ["y1","x1","y1x1"])
+        piece.__init__(self, xPos, yPos, graphic, ["01n","10n","11n"])
 
 class king(piece):
     def __init__(self, xPos, yPos, graphic):
-        piece.__init__(self, xPos, yPos, graphic, ["y1","x1","y1x1"], False)
+        piece.__init__(self, xPos, yPos, graphic, ["10n","01n","11n"], False)
 
 def setup():
-    global BKG,BQG,BRG,BBG,BNG,BPG,WKG,WQG,WRG,WBG,WNG,WPG
+    global BKG,BQG,BRG,BBG,BNG,BPG,WKG,WQG,WRG,WBG,WNG,WPG, dotG
     #Black Pieces
     BKG = pygame.image.load("./BK.png")
     # BKrect = BK.get_rect()
@@ -82,6 +84,9 @@ def setup():
     # WNrect = WN.get_rect()
     WPG = pygame.image.load("./WP.png")
     # WPrect = WP.get_rect()
+
+    dot = pygame.image.load("./dot.png")
+
     BKG = pygame.transform.scale(BKG,(width/8,height/8))
     BQG = pygame.transform.scale(BQG,(width/8,height/8))
     BRG = pygame.transform.scale(BRG,(width/8,height/8))
@@ -95,6 +100,7 @@ def setup():
     WBG = pygame.transform.scale(WBG,(width/8,height/8))
     WNG = pygame.transform.scale(WNG,(width/8,height/8))
     WPG = pygame.transform.scale(WPG,(width/8,height/8))
+    dotG = pygame.transform.scale(dot,(width/8,height/8))
 
 def main():
     pygame.init()
@@ -138,39 +144,6 @@ def main():
     whitePieces.append(pawn(6,6, WPG))
     whitePieces.append(pawn(7,6, WPG))
 
-    # BK1 = king(4,0, BKG)
-    # BQ1 = queen(3,0, BQG)
-    # BR1 = rook(0,0, BRG)
-    # BR2 = rook(7,0, BRG)
-    # BB1 = bishop(2,0, BBG)
-    # BB2 = bishop(5,0, BBG)
-    # BN1 = knight(1,0, BNG)
-    # BN2 = knight(6,0, BNG)
-    # BP1 = pawn(0,1, BPG)
-    # BP2 = pawn(1,1, BPG)
-    # BP3 = pawn(2,1, BPG)
-    # BP4 = pawn(3,1, BPG)
-    # BP5 = pawn(4,1, BPG)
-    # BP6 = pawn(5,1, BPG)
-    # BP7 = pawn(6,1, BPG)
-    # BP8 = pawn(7,1, BPG)
-    # WK1 = king(4,7, WKG)
-    # WQ1 = queen(3,7, WQG)
-    # WR1 = rook(0,7, WRG)
-    # WR2 = rook(7,7, WRG)
-    # WB1 = bishop(2,7, WBG)
-    # WB2 = bishop(5,7, WBG)
-    # WN1 = knight(1,7, WNG)
-    # WN2 = knight(6,7, WNG)
-    # WP1 = pawn(0,6, WPG)
-    # WP2 = pawn(1,6, WPG)
-    # WP3 = pawn(2,6, WPG)
-    # WP4 = pawn(3,6, WPG)
-    # WP5 = pawn(4,6, WPG)
-    # WP6 = pawn(5,6, WPG)
-    # WP7 = pawn(6,6, WPG)
-    # WP8 = pawn(7,6, WPG)
-
     mouse_x, mouse_y = -1,-1
     whiteTurn = True #White's turn first
     highlightSquare = False
@@ -180,9 +153,6 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
-            # elif event.type == MOUSEBUTTONUP:
-            #     if event.pos == #pos
-            #     #click code
         screen.fill((0,0,0))
         darkSquare = True
 
@@ -194,16 +164,21 @@ def main():
         #Test to see if area clicked should be highlighted. Based on occupied square by player
         highlightSquare = False
         if not whiteTurn:
-            for piece in blackPieces:
-                if piece.x*width/boardSize < mouse_x and (piece.x+1)*width/boardSize > mouse_x and piece.y*height/boardSize < mouse_y and (piece.y+1)*height/boardSize > mouse_y:
+            for piece in range(len(blackPieces)):
+                if blackPieces[piece].x*width/boardSize < mouse_x and (blackPieces[piece].x+1)*width/boardSize > mouse_x and blackPieces[piece].y*height/boardSize < mouse_y and (blackPieces[piece].y+1)*height/boardSize > mouse_y:
                     highlightSquare = True
-                    break
+                    blackPieces[piece].enabled = True
+                else:
+                    blackPieces[piece].enabled = False
         else:
-            for piece in whitePieces:
-                if piece.x*width/boardSize < mouse_x and (piece.x+1)*width/boardSize > mouse_x and piece.y*height/boardSize < mouse_y and (piece.y+1)*height/boardSize > mouse_y:
+            for piece in range(len(whitePieces)):
+                if whitePieces[piece].x*width/boardSize < mouse_x and (whitePieces[piece].x+1)*width/boardSize > mouse_x and whitePieces[piece].y*height/boardSize < mouse_y and (whitePieces[piece].y+1)*height/boardSize > mouse_y:
                     highlightSquare = True
-                    break
+                    whitePieces[piece].enabled = True
+                else:
+                    whitePieces[piece].enabled = False
 
+        #Draw board
         for x in range(boardSize):
             darkSquare = not darkSquare
             for y in range(boardSize):
@@ -217,6 +192,22 @@ def main():
                 else:
                     pygame.draw.rect(screen, (240,217,181), [width/boardSize*x,height/boardSize*y,width/boardSize, height/boardSize])
                     darkSquare = True
+
+        for piece in blackPieces:
+            if piece.enabled:
+                for move in piece.moves:
+                    move_x = int(move[0])
+                    move_y = int(move[1])
+                    move_mod = move[2]
+                    screen.blit(dotG,((piece.x+move_x)*width/boardSize,(piece.y+move_y)*height/boardSize))
+        for piece in whitePieces:
+            if piece.enabled:
+                for move in piece.moves:
+                    move_x = int(move[0])
+                    move_y = int(move[1])
+                    move_mod = move[2]
+                    screen.blit(dotG,((piece.x-move_x)*width/boardSize,(piece.y-move_y)*height/boardSize))
+
 
         ### Draw Pieces ###
         for piece in blackPieces:
