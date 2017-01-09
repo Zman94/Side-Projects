@@ -268,11 +268,11 @@ def main():
                         else:
                             if move_mod == 's':
                                 if piece.start:
-                                    if not ((piece.x+move_x_temp,piece.y+move_y_temp) in whiteSquaresOc or piece.x+move_x_temp > 8 or piece.y+move_y_temp > 8):
+                                    if not ((piece.x+move_x_temp,piece.y+move_y_temp) in whiteSquaresOc or piece.x+move_x_temp > 7 or piece.y+move_y_temp > 7):
                                         screen.blit(dotG,((piece.x-move_x)*width/boardSize,(piece.y-move_y)*height/boardSize))
-                                    if not ((piece.x-move_x_temp,piece.y+move_y_temp) in whiteSquaresOc or piece.x-move_x_temp <= 0 or piece.y+move_y_temp > 8):
+                                    if not ((piece.x-move_x_temp,piece.y+move_y_temp) in whiteSquaresOc or piece.x-move_x_temp <= 0 or piece.y+move_y_temp > 7):
                                         screen.blit(dotG,((piece.x-move_x)*width/boardSize,(piece.y-move_y)*height/boardSize))
-                                    if not ((piece.x+move_x_temp,piece.y-move_y_temp) in whiteSquaresOc or piece.x+move_x_temp > 8 or piece.y-move_y_temp <= 0):
+                                    if not ((piece.x+move_x_temp,piece.y-move_y_temp) in whiteSquaresOc or piece.x+move_x_temp > 7 or piece.y-move_y_temp <= 0):
                                         screen.blit(dotG,((piece.x-move_x)*width/boardSize,(piece.y-move_y)*height/boardSize))
                                     if not ((piece.x-move_x_temp,piece.y-move_y_temp) in whiteSquaresOc or piece.x-move_x_temp <= 0 or piece.y-move_y_temp <= 0):
                                         screen.blit(dotG,((piece.x-move_x)*width/boardSize,(piece.y-move_y)*height/boardSize))
