@@ -20,6 +20,8 @@ dotG=None
 BKrect,BQrect,BRrect,BBrect,BNrect,BPrect=None,None,None,None,None,None
 WKrect,WQrect,WRrect,WBrect,WNrect,WPrect=None,None,None,None,None,None
 
+blackPieces, whitePieces = list(), list()
+
 class piece(object):
     def __init__(self, xPos, yPos, graphic, movement, fullBoard=True, pawn=False):
         self.x = xPos
@@ -30,6 +32,197 @@ class piece(object):
         self.start = True
         self.graphic = graphic
         self.enabled = False
+        self.posMoves = list()
+
+    def getMoves(self, screen, blackSquaresOc, whiteSquaresOc):
+        ############ Black ############
+        if not whiteTurn:
+            if blackPieces[piece].enabled:
+                blackPieces[piece].posMoves = list()
+                for move in blackPieces[piece].moves:
+                    move_x = int(move[0])
+                    move_y = int(move[1])
+                    move_mod = move[2]
+                    move_x_temp = move_x
+                    move_y_temp = move_y
+                    if blackPiece[piece].pawn == False:
+                        if blackPiece[piece].fullBoard:
+                            while blackPieces[piece].x-move_x_temp >= 0 and blackPieces[piece].y-move_y_temp >= 0:
+                                if (blackPieces[piece].x-move_x_temp,blackPieces[piece].y-move_y_temp) in blackSquaresOc:
+                                    break
+                                screen.blit(dotG,((blackPieces[piece].x-move_x_temp)*width/boardSize,(blackPieces[piece].y-move_y_temp)*height/boardSize))
+                                blackPieces[piece].posMoves.append((blackPieces[piece].x-move_x_temp,blackPieces[piece].y-move_y_temp))
+                                if (blackPieces[piece].x-move_x_temp,blackPieces[piece].y-move_y_temp) in whiteSquaresOc:
+                                    break
+                                move_x_temp+=move_x
+                                move_y_temp+=move_y
+                                move_x_temp = move_x
+                                move_y_temp = move_y
+                            while blackPieces[piece].x-move_x_temp >= 0 and blackPieces[piece].y+move_y_temp < 8:
+                                if (blackPieces[piece].x-move_x_temp,blackPieces[piece].y+move_y_temp) in blackSquaresOc:
+                                    break
+                                screen.blit(dotG,((blackPieces[piece].x-move_x_temp)*width/boardSize,(blackPieces[piece].y+move_y_temp)*height/boardSize))
+                                blackPieces[piece].posMoves.append((blackPieces[piece].x-move_x_temp,blackPieces[piece].y+move_y_temp))
+                                if (blackPieces[piece].x-move_x_temp,blackPieces[piece].y+move_y_temp) in whiteSquaresOc:
+                                    break
+                                move_x_temp+=move_x
+                                move_y_temp+=move_y
+                                move_x_temp = move_x
+                                move_y_temp = move_y
+                            while blackPieces[piece].x+move_x_temp < 8 and blackPieces[piece].y-move_y_temp >= 0:
+                                if (blackPieces[piece].x+move_x_temp,blackPieces[piece].y-move_y_temp) in blackSquaresOc:
+                                    break
+                                screen.blit(dotG,((blackPieces[piece].x+move_x_temp)*width/boardSize,(blackPieces[piece].y-move_y_temp)*height/boardSize))
+                                blackPieces[piece].posMoves.append((blackPieces[piece].x+move_x_temp,blackPieces[piece].y-move_y_temp))
+                                if (blackPieces[piece].x+move_x_temp,blackPieces[piece].y-move_y_temp) in whiteSquaresOc:
+                                    break
+                                move_x_temp+=move_x
+                                move_y_temp+=move_y
+                                move_x_temp = move_x
+                                move_y_temp = move_y
+                            while blackPieces[piece].x+move_x_temp < 8 and blackPieces[piece].y+move_y_temp < 8:
+                                if (blackPieces[piece].x+move_x_temp,blackPieces[piece].y+move_y_temp) in blackSquaresOc:
+                                    break
+                                screen.blit(dotG,((blackPieces[piece].x+move_x_temp)*width/boardSize,(blackPieces[piece].y+move_y_temp)*height/boardSize))
+                                blackPieces[piece].posMoves.append((blackPieces[piece].x+move_x_temp,blackPieces[piece].y+move_y_temp))
+                                if (blackPieces[piece].x+move_x_temp,blackPieces[piece].y+move_y_temp) in whiteSquaresOc:
+                                    break
+                                move_x_temp+=move_x
+                                move_y_temp+=move_y
+
+                        else:
+                            if move_mod == 's':
+                                if blackPieces[piece].start:
+                                    if not ((blackPieces[piece].x+move_x,blackPieces[piece].y+move_y) in blackSquaresOc or blackPieces[piece].x+move_x > 8 or blackPieces[piece].y+move_y > 8):
+                                        screen.blit(dotG,((blackPieces[piece].x-move_x)*width/boardSize,(blackPieces[piece].y-move_y)*height/boardSize))
+                                        blackPieces[piece].posMoves.append((blackPieces[piece].x-move_x,blackPieces[piece].y-move_y))
+                                    if not ((blackPieces[piece].x-move_x,blackPieces[piece].y+move_y) in blackSquaresOc or blackPieces[piece].x-move_x <= 0 or blackPieces[piece].y+move_y > 8):
+                                        screen.blit(dotG,((blackPieces[piece].x-move_x)*width/boardSize,(blackPieces[piece].y-move_y)*height/boardSize))
+                                        blackPieces[piece].posMoves.append((blackPieces[piece].x-move_x,blackPieces[piece].y-move_y))
+                                    if not ((blackPieces[piece].x+move_x,blackPieces[piece].y-move_y) in blackSquaresOc or blackPieces[piece].x+move_x > 8 or blackPieces[piece].y-move_y <= 0):
+                                        screen.blit(dotG,((blackPieces[piece].x-move_x)*width/boardSize,(blackPieces[piece].y-move_y)*height/boardSize))
+                                        blackPieces[piece].posMoves.append((blackPieces[piece].x-move_x,blackPieces[piece].y-move_y))
+                                    if not ((blackPieces[piece].x-move_x,blackPieces[piece].y-move_y) in blackSquaresOc or blackPieces[piece].x-move_x <= 0 or blackPieces[piece].y-move_y <= 0):
+                                        screen.blit(dotG,((blackPieces[piece].x-move_x)*width/boardSize,(blackPieces[piece].y-move_y)*height/boardSize))
+                                        blackPieces[piece].posMoves.append((blackPieces[piece].x-move_x,blackPieces[piece].y-move_y))
+                            elif move_mod == 'n':
+                                if not ((blackPieces[piece].x+move_x,blackPieces[piece].y+move_y) in blackSquaresOc or blackPieces[piece].x+move_x >= 8 or blackPieces[piece].y+move_y >= 8):
+                                    screen.blit(dotG,((blackPieces[piece].x+move_x)*width/boardSize,(blackPieces[piece].y+move_y)*height/boardSize))
+                                    blackPieces[piece].posMoves.append((blackPieces[piece].x+move_x,blackPieces[piece].y+move_y))
+                                if not ((blackPieces[piece].x-move_x,blackPieces[piece].y+move_y) in blackSquaresOc or blackPieces[piece].x-move_x < 0 or blackPieces[piece].y+move_y >= 8):
+                                    screen.blit(dotG,((blackPieces[piece].x-move_x)*width/boardSize,(blackPieces[piece].y+move_y)*height/boardSize))
+                                    blackPieces[piece].posMoves.append((blackPieces[piece].x-move_x,blackPieces[piece].y+move_y))
+                                if not ((blackPieces[piece].x+move_x,blackPieces[piece].y-move_y) in blackSquaresOc or blackPieces[piece].x+move_x >= 8 or blackPieces[piece].y-move_y < 0):
+                                    screen.blit(dotG,((blackPieces[piece].x+move_x)*width/boardSize,(blackPieces[piece].y-move_y)*height/boardSize))
+                                    blackPieces[piece].posMoves.append((blackPieces[piece].x+move_x,blackPieces[piece].y-move_y))
+                                if not ((blackPieces[piece].x-move_x,blackPieces[piece].y-move_y) in blackSquaresOc or blackPieces[piece].x-move_x < 0 or blackPieces[piece].y-move_y < 0):
+                                    screen.blit(dotG,((blackPieces[piece].x-move_x)*width/boardSize,(blackPieces[piece].y-move_y)*height/boardSize))
+                                    blackPieces[piece].posMoves.append((blackPieces[piece].x-move_x,blackPieces[piece].y-move_y))
+
+                    else:
+                        if move_mod == 's':
+                            if blackPieces[piece].start:
+                                if (blackPieces[piece].x-move_x,blackPieces[piece].y+move_y) not in whiteSquaresOc and (blackPieces[piece].x-move_x,blackPieces[piece].y+move_y-1) not in whiteSquaresOc and (blackPieces[piece].x-move_x,blackPieces[piece].y+move_y) not in blackSquaresOc and blackPieces[piece].y+move_y < 8:
+                                    screen.blit(dotG, ((blackPieces[piece].x-move_x)*width/boardSize,(blackPieces[piece].y+move_y)*height/boardSize))
+                        elif move_mod == 'c':
+                            if (blackPieces[piece].x-move_x, blackPieces[piece].y+move_y) in whiteSquaresOc and blackPieces[piece].y+move_y < 8 and blackPieces[piece].x-move_x >= 0:
+                                screen.blit(dotG, ((blackPieces[piece].x-move_x)*width/boardSize,
+                                                    (blackPieces[piece].y+move_y)*height/boardSize))
+                            if (blackPieces[piece].x+move_x, blackPieces[piece].y+move_y) in whiteSquaresOc and blackPieces[piece].y+move_y < 8 and blackPieces[piece].x+move_x < 8:
+                                screen.blit(dotG, ((blackPieces[piece].x+move_x)*width/boardSize,
+                                                    (blackPieces[piece].y+move_y)*height/boardSize))
+                        else:
+                            if (blackPieces[piece].x-move_x,blackPieces[piece].y+move_y) not in whiteSquaresOc and (blackPieces[piece].x-move_x,blackPieces[piece].y+move_y) not in blackSquaresOc:
+                                screen.blit(dotG, ((blackPieces[piece].x-move_x)*width/boardSize,
+                                                    (blackPieces[piece].y+move_y)*height/boardSize))
+        ################# White #####################
+        else:
+            if whitePieces[piece].enabled:
+                for move in whitePieces[piece].moves:
+                    move_x = int(move[0])
+                    move_y = int(move[1])
+                    move_mod = move[2]
+                    move_x_temp = move_x
+                    move_y_temp = move_y
+                    if whitePieces[piece].pawn == False:
+                        if whitePieces[piece].fullBoard:
+                            while whitePieces[piece].x-move_x_temp >= 0 and whitePieces[piece].y-move_y_temp >= 0:
+                                if (whitePieces[piece].x-move_x_temp,whitePieces[piece].y-move_y_temp) in whiteSquaresOc:
+                                    break
+                                screen.blit(dotG,((whitePieces[piece].x-move_x_temp)*width/boardSize,(whitePieces[piece].y-move_y_temp)*height/boardSize))
+                                if (whitePieces[piece].x-move_x_temp,whitePieces[piece].y-move_y_temp) in blackSquaresOc:
+                                    break
+                                move_x_temp+=move_x
+                                move_y_temp+=move_y
+                                move_x_temp = move_x
+                                move_y_temp = move_y
+                            while whitePieces[piece].x-move_x_temp >= 0 and whitePieces[piece].y+move_y_temp < 8:
+                                if (whitePieces[piece].x-move_x_temp,whitePieces[piece].y+move_y_temp) in whiteSquaresOc:
+                                    break
+                                screen.blit(dotG,((whitePieces[piece].x-move_x_temp)*width/boardSize,(whitePieces[piece].y+move_y_temp)*height/boardSize))
+                                if (whitePieces[piece].x-move_x_temp,whitePieces[piece].y+move_y_temp) in blackSquaresOc:
+                                    break
+                                move_x_temp+=move_x
+                                move_y_temp+=move_y
+                                move_x_temp = move_x
+                                move_y_temp = move_y
+                            while whitePieces[piece].x+move_x_temp < 8 and whitePieces[piece].y-move_y_temp >= 0:
+                                if (whitePieces[piece].x+move_x_temp,whitePieces[piece].y-move_y_temp) in whiteSquaresOc:
+                                    break
+                                screen.blit(dotG,((whitePieces[piece].x+move_x_temp)*width/boardSize,(whitePieces[piece].y-move_y_temp)*height/boardSize))
+                                if (whitePieces[piece].x+move_x_temp,whitePieces[piece].y-move_y_temp) in blackSquaresOc:
+                                    break
+                                move_x_temp+=move_x
+                                move_y_temp+=move_y
+                                move_x_temp = move_x
+                                move_y_temp = move_y
+                            while whitePieces[piece].x+move_x_temp < 8 and whitePieces[piece].y+move_y_temp < 8:
+                                if (whitePieces[piece].x+move_x_temp,whitePieces[piece].y+move_y_temp) in whiteSquaresOc:
+                                    break
+                                screen.blit(dotG,((whitePieces[piece].x+move_x_temp)*width/boardSize,(whitePieces[piece].y+move_y_temp)*height/boardSize))
+                                if (whitePieces[piece].x+move_x_temp,whitePieces[piece].y+move_y_temp) in blackSquaresOc:
+                                    break
+                                move_x_temp+=move_x
+                                move_y_temp+=move_y
+
+                        else:
+                            if move_mod == 's':
+                                if whitePieces[piece].start:
+                                    if not ((whitePieces[piece].x+move_x,whitePieces[piece].y+move_y) in whiteSquaresOc or whitePieces[piece].x+move_x > 8 or whitePieces[piece].y+move_y > 8):
+                                        screen.blit(dotG,((whitePieces[piece].x-move_x)*width/boardSize,(whitePieces[piece].y-move_y)*height/boardSize))
+                                    if not ((whitePieces[piece].x-move_x,whitePieces[piece].y+move_y) in whiteSquaresOc or whitePieces[piece].x-move_x <= 0 or whitePieces[piece].y+move_y > 8):
+                                        screen.blit(dotG,((whitePieces[piece].x-move_x)*width/boardSize,(whitePieces[piece].y-move_y)*height/boardSize))
+                                    if not ((whitePieces[piece].x+move_x,whitePieces[piece].y-move_y) in whiteSquaresOc or whitePieces[piece].x+move_x > 8 or whitePieces[piece].y-move_y <= 0):
+                                        screen.blit(dotG,((whitePieces[piece].x-move_x)*width/boardSize,(whitePieces[piece].y-move_y)*height/boardSize))
+                                    if not ((whitePieces[piece].x-move_x,whitePieces[piece].y-move_y) in whiteSquaresOc or whitePieces[piece].x-move_x <= 0 or whitePieces[piece].y-move_y <= 0):
+                                        screen.blit(dotG,((whitePieces[piece].x-move_x)*width/boardSize,(whitePieces[piece].y-move_y)*height/boardSize))
+
+                            elif move_mod == 'n':
+                                if not ((whitePieces[piece].x+move_x,whitePieces[piece].y+move_y) in whiteSquaresOc or whitePieces[piece].x+move_x > 8 or whitePieces[piece].y+move_y > 8):
+                                    screen.blit(dotG,((whitePieces[piece].x+move_x)*width/boardSize,(whitePieces[piece].y+move_y)*height/boardSize))
+                                if not ((whitePieces[piece].x-move_x,whitePieces[piece].y+move_y) in whiteSquaresOc or whitePieces[piece].x-move_x <= 0 or whitePieces[piece].y+move_y > 8):
+                                    screen.blit(dotG,((whitePieces[piece].x-move_x)*width/boardSize,(whitePieces[piece].y+move_y)*height/boardSize))
+                                if not ((whitePieces[piece].x+move_x,whitePieces[piece].y-move_y) in whiteSquaresOc or whitePieces[piece].x+move_x > 8 or whitePieces[piece].y-move_y <= 0):
+                                    screen.blit(dotG,((whitePieces[piece].x+move_x)*width/boardSize,(whitePieces[piece].y-move_y)*height/boardSize))
+                                if not ((whitePieces[piece].x-move_x,whitePieces[piece].y-move_y) in whiteSquaresOc or whitePieces[piece].x-move_x <= 0 or whitePieces[piece].y-move_y <= 0):
+                                    screen.blit(dotG,((whitePieces[piece].x-move_x)*width/boardSize,(whitePieces[piece].y-move_y)*height/boardSize))
+
+                    else:
+                        if move_mod == 's':
+                            if whitePieces[piece].start:
+                                if (whitePieces[piece].x-move_x,whitePieces[piece].y-move_y) not in blackSquaresOc and (whitePieces[piece].x-move_x,whitePieces[piece].y-move_y+1) not in blackSquaresOc and (whitePieces[piece].x-move_x,whitePieces[piece].y-move_y) not in whiteSquaresOc and whitePieces[piece].y-move_y >= 0:
+                                    screen.blit(dotG, ((whitePieces[piece].x-move_x)*width/boardSize,(whitePieces[piece].y-move_y)*height/boardSize))
+                        elif move_mod == 'c':
+                            if (whitePieces[piece].x-move_x, whitePieces[piece].y-move_y) in blackSquaresOc and whitePieces[piece].y-move_y >= 0 and whitePieces[piece].x-move_x >= 0:
+                                screen.blit(dotG, ((whitePieces[piece].x-move_x)*width/boardSize,
+                                                   (whitePieces[piece].y-move_y)*height/boardSize))
+                            if (whitePieces[piece].x+move_x, whitePieces[piece].y-move_y) in blackSquaresOc and whitePieces[piece].y-move_y >= 0 and whitePieces[piece].x+move_x < 8:
+                                screen.blit(dotG, ((whitePieces[piece].x+move_x)*width/boardSize,
+                                                   (whitePieces[piece].y-move_y)*height/boardSize))
+                        else:
+                            if (whitePieces[piece].x-move_x,whitePieces[piece].y-move_y) not in blackSquaresOc and (whitePieces[piece].x-move_x,whitePieces[piece].y-move_y) not in whiteSquaresOc:
+                                screen.blit(dotG, ((whitePieces[piece].x-move_x)*width/boardSize,
+                                                   (whitePieces[piece].y-move_y)*height/boardSize))
 
 class pawn(piece):
     def __init__(self, xPos, yPos, graphic):
@@ -103,12 +296,12 @@ def setup():
     dotG = pygame.transform.scale(dot,(width/8,height/8))
 
 def main():
+    global blackPieces, whitePieces
     pygame.init()
     screen = pygame.display.set_mode((width,height))
     pygame.display.set_caption("Chess")
     setup()
 
-    blackPieces = []
     blackPieces.append(king(4,0, BKG))
     blackPieces.append(queen(3,0, BQG))
     blackPieces.append(rook(0,0, BRG))
@@ -119,14 +312,13 @@ def main():
     blackPieces.append(knight(1,0, BNG))
     blackPieces.append(pawn(0,1, BPG))
     blackPieces.append(pawn(1,1, BPG))
-    blackPieces.append(pawn(2,5, BPG))
+    blackPieces.append(pawn(2,1, BPG))
     blackPieces.append(pawn(3,1, BPG))
     blackPieces.append(pawn(4,1, BPG))
     blackPieces.append(pawn(5,1, BPG))
     blackPieces.append(pawn(6,1, BPG))
     blackPieces.append(pawn(7,1, BPG))
 
-    whitePieces = []
     whitePieces.append(king(4,7, WKG))
     whitePieces.append(queen(3,7, WQG))
     whitePieces.append(rook(0,7, WRG))
@@ -145,7 +337,7 @@ def main():
     whitePieces.append(pawn(7,6, WPG))
 
     mouse_x, mouse_y = -1,-1
-    whiteTurn = False #White's turn first
+    whiteTurn = True #White's turn first
     highlightSquare = False
 
     #Game Loop#
@@ -197,192 +389,20 @@ def main():
         ### Draw Pieces ###
         for piece in blackPieces:
             screen.blit(piece.graphic,(piece.x*width/boardSize,piece.y*height/boardSize))
-            blackSquaresOc.append((piece.x,piece.y))
+            blackSquaresOc.append((piece.x, piece.y))
         for piece in whitePieces:
             screen.blit(piece.graphic,(piece.x*width/boardSize,piece.y*height/boardSize))
-            whiteSquaresOc.append((piece.x,piece.y))
+            whiteSquaresOc.append((piece.x, piece.y))
 
         ### Move dots ###
-        if not whiteTurn:
-            for piece in blackPieces:
-                if piece.enabled:
-                    for move in piece.moves:
-                        move_x = int(move[0])
-                        move_y = int(move[1])
-                        move_mod = move[2]
-                        move_x_temp = move_x
-                        move_y_temp = move_y
-                        if piece.pawn == False:
-                            if piece.fullBoard:
-                                while piece.x-move_x_temp >= 0 and piece.y-move_y_temp >= 0:
-                                    if (piece.x-move_x_temp,piece.y-move_y_temp) in blackSquaresOc:
-                                        break
-                                    screen.blit(dotG,((piece.x-move_x_temp)*width/boardSize,(piece.y-move_y_temp)*height/boardSize))
-                                    if (piece.x-move_x_temp,piece.y-move_y_temp) in whiteSquaresOc:
-                                        break
-                                    move_x_temp+=move_x
-                                    move_y_temp+=move_y
-                                move_x_temp = move_x
-                                move_y_temp = move_y
-                                while piece.x-move_x_temp >= 0 and piece.y+move_y_temp < 8:
-                                    if (piece.x-move_x_temp,piece.y+move_y_temp) in blackSquaresOc:
-                                        break
-                                    screen.blit(dotG,((piece.x-move_x_temp)*width/boardSize,(piece.y+move_y_temp)*height/boardSize))
-                                    if (piece.x-move_x_temp,piece.y+move_y_temp) in whiteSquaresOc:
-                                        break
-                                    move_x_temp+=move_x
-                                    move_y_temp+=move_y
-                                move_x_temp = move_x
-                                move_y_temp = move_y
-                                while piece.x+move_x_temp < 8 and piece.y-move_y_temp >= 0:
-                                    if (piece.x+move_x_temp,piece.y-move_y_temp) in blackSquaresOc:
-                                        break
-                                    screen.blit(dotG,((piece.x+move_x_temp)*width/boardSize,(piece.y-move_y_temp)*height/boardSize))
-                                    if (piece.x+move_x_temp,piece.y-move_y_temp) in whiteSquaresOc:
-                                        break
-                                    move_x_temp+=move_x
-                                    move_y_temp+=move_y
-                                move_x_temp = move_x
-                                move_y_temp = move_y
-                                while piece.x+move_x_temp < 8 and piece.y+move_y_temp < 8:
-                                    if (piece.x+move_x_temp,piece.y+move_y_temp) in blackSquaresOc:
-                                        break
-                                    screen.blit(dotG,((piece.x+move_x_temp)*width/boardSize,(piece.y+move_y_temp)*height/boardSize))
-                                    if (piece.x+move_x_temp,piece.y+move_y_temp) in whiteSquaresOc:
-                                        break
-                                    move_x_temp+=move_x
-                                    move_y_temp+=move_y
-
-                            else:
-                                if move_mod == 's':
-                                    if piece.start:
-                                        if not ((piece.x+move_x,piece.y+move_y) in blackSquaresOc or piece.x+move_x > 8 or piece.y+move_y > 8):
-                                            screen.blit(dotG,((piece.x-move_x)*width/boardSize,(piece.y-move_y)*height/boardSize))
-                                        if not ((piece.x-move_x,piece.y+move_y) in blackSquaresOc or piece.x-move_x <= 0 or piece.y+move_y > 8):
-                                            screen.blit(dotG,((piece.x-move_x)*width/boardSize,(piece.y-move_y)*height/boardSize))
-                                        if not ((piece.x+move_x,piece.y-move_y) in blackSquaresOc or piece.x+move_x > 8 or piece.y-move_y <= 0):
-                                            screen.blit(dotG,((piece.x-move_x)*width/boardSize,(piece.y-move_y)*height/boardSize))
-                                        if not ((piece.x-move_x,piece.y-move_y) in blackSquaresOc or piece.x-move_x <= 0 or piece.y-move_y <= 0):
-                                            screen.blit(dotG,((piece.x-move_x)*width/boardSize,(piece.y-move_y)*height/boardSize))
-
-                                elif move_mod == 'n':
-                                    if not ((piece.x+move_x,piece.y+move_y) in blackSquaresOc or piece.x+move_x >= 8 or piece.y+move_y >= 8):
-                                        screen.blit(dotG,((piece.x+move_x)*width/boardSize,(piece.y+move_y)*height/boardSize))
-                                    if not ((piece.x-move_x,piece.y+move_y) in blackSquaresOc or piece.x-move_x < 0 or piece.y+move_y >= 8):
-                                        screen.blit(dotG,((piece.x-move_x)*width/boardSize,(piece.y+move_y)*height/boardSize))
-                                    if not ((piece.x+move_x,piece.y-move_y) in blackSquaresOc or piece.x+move_x >= 8 or piece.y-move_y < 0):
-                                        screen.blit(dotG,((piece.x+move_x)*width/boardSize,(piece.y-move_y)*height/boardSize))
-                                    if not ((piece.x-move_x,piece.y-move_y) in blackSquaresOc or piece.x-move_x < 0 or piece.y-move_y < 0):
-                                        screen.blit(dotG,((piece.x-move_x)*width/boardSize,(piece.y-move_y)*height/boardSize))
-
-                        else:
-                            if move_mod == 's':
-                                if piece.start:
-                                    if (piece.x-move_x,piece.y+move_y) not in whiteSquaresOc and (piece.x-move_x,piece.y+move_y) not in blackSquaresOc and piece.y+move_y < 8:
-                                        screen.blit(dotG, ((piece.x-move_x)*width/boardSize,(piece.y+move_y)*height/boardSize))
-                            elif move_mod == 'c':
-                                if (piece.x-move_x, piece.y+move_y) in whiteSquaresOc and piece.y+move_y < 8 and piece.x-move_x >= 0:
-                                    screen.blit(dotG, ((piece.x-move_x)*width/boardSize,
-                                                       (piece.y+move_y)*height/boardSize))
-                                if (piece.x+move_x, piece.y+move_y) in whiteSquaresOc and piece.y+move_y < 8 and piece.x+move_x < 8:
-                                    screen.blit(dotG, ((piece.x+move_x)*width/boardSize,
-                                                       (piece.y+move_y)*height/boardSize))
-                            else:
-                                if (piece.x-move_x,piece.y+move_y) not in whiteSquaresOc and (piece.x-move_x,piece.y+move_y) not in blackSquaresOc:
-                                    screen.blit(dotG, ((piece.x-move_x)*width/boardSize,
-                                                       (piece.y+move_y)*height/boardSize))
-        ################# White #####################
-        else:
-            for piece in whitePieces:
-                if piece.enabled:
-                    for move in piece.moves:
-                        move_x = int(move[0])
-                        move_y = int(move[1])
-                        move_mod = move[2]
-                        move_x_temp = move_x
-                        move_y_temp = move_y
-                        if piece.pawn == False:
-                            if piece.fullBoard:
-                                while piece.x-move_x_temp >= 0 and piece.y-move_y_temp >= 0:
-                                    if (piece.x-move_x_temp,piece.y-move_y_temp) in whiteSquaresOc:
-                                        break
-                                    screen.blit(dotG,((piece.x-move_x_temp)*width/boardSize,(piece.y-move_y_temp)*height/boardSize))
-                                    if (piece.x-move_x_temp,piece.y-move_y_temp) in blackSquaresOc:
-                                        break
-                                    move_x_temp+=move_x
-                                    move_y_temp+=move_y
-                                move_x_temp = move_x
-                                move_y_temp = move_y
-                                while piece.x-move_x_temp >= 0 and piece.y+move_y_temp < 8:
-                                    if (piece.x-move_x_temp,piece.y+move_y_temp) in whiteSquaresOc:
-                                        break
-                                    screen.blit(dotG,((piece.x-move_x_temp)*width/boardSize,(piece.y+move_y_temp)*height/boardSize))
-                                    if (piece.x-move_x_temp,piece.y+move_y_temp) in blackSquaresOc:
-                                        break
-                                    move_x_temp+=move_x
-                                    move_y_temp+=move_y
-                                move_x_temp = move_x
-                                move_y_temp = move_y
-                                while piece.x+move_x_temp < 8 and piece.y-move_y_temp >= 0:
-                                    if (piece.x+move_x_temp,piece.y-move_y_temp) in whiteSquaresOc:
-                                        break
-                                    screen.blit(dotG,((piece.x+move_x_temp)*width/boardSize,(piece.y-move_y_temp)*height/boardSize))
-                                    if (piece.x+move_x_temp,piece.y-move_y_temp) in blackSquaresOc:
-                                        break
-                                    move_x_temp+=move_x
-                                    move_y_temp+=move_y
-                                move_x_temp = move_x
-                                move_y_temp = move_y
-                                while piece.x+move_x_temp < 8 and piece.y+move_y_temp < 8:
-                                    if (piece.x+move_x_temp,piece.y+move_y_temp) in whiteSquaresOc:
-                                        break
-                                    screen.blit(dotG,((piece.x+move_x_temp)*width/boardSize,(piece.y+move_y_temp)*height/boardSize))
-                                    if (piece.x+move_x_temp,piece.y+move_y_temp) in blackSquaresOc:
-                                        break
-                                    move_x_temp+=move_x
-                                    move_y_temp+=move_y
-
-                            else:
-                                if move_mod == 's':
-                                    if piece.start:
-                                        if not ((piece.x+move_x,piece.y+move_y) in whiteSquaresOc or piece.x+move_x > 8 or piece.y+move_y > 8):
-                                            screen.blit(dotG,((piece.x-move_x)*width/boardSize,(piece.y-move_y)*height/boardSize))
-                                        if not ((piece.x-move_x,piece.y+move_y) in whiteSquaresOc or piece.x-move_x <= 0 or piece.y+move_y > 8):
-                                            screen.blit(dotG,((piece.x-move_x)*width/boardSize,(piece.y-move_y)*height/boardSize))
-                                        if not ((piece.x+move_x,piece.y-move_y) in whiteSquaresOc or piece.x+move_x > 8 or piece.y-move_y <= 0):
-                                            screen.blit(dotG,((piece.x-move_x)*width/boardSize,(piece.y-move_y)*height/boardSize))
-                                        if not ((piece.x-move_x,piece.y-move_y) in whiteSquaresOc or piece.x-move_x <= 0 or piece.y-move_y <= 0):
-                                            screen.blit(dotG,((piece.x-move_x)*width/boardSize,(piece.y-move_y)*height/boardSize))
-
-                                elif move_mod == 'n':
-                                    if not ((piece.x+move_x,piece.y+move_y) in whiteSquaresOc or piece.x+move_x > 8 or piece.y+move_y > 8):
-                                        screen.blit(dotG,((piece.x+move_x)*width/boardSize,(piece.y+move_y)*height/boardSize))
-                                    if not ((piece.x-move_x,piece.y+move_y) in whiteSquaresOc or piece.x-move_x <= 0 or piece.y+move_y > 8):
-                                        screen.blit(dotG,((piece.x-move_x)*width/boardSize,(piece.y+move_y)*height/boardSize))
-                                    if not ((piece.x+move_x,piece.y-move_y) in whiteSquaresOc or piece.x+move_x > 8 or piece.y-move_y <= 0):
-                                        screen.blit(dotG,((piece.x+move_x)*width/boardSize,(piece.y-move_y)*height/boardSize))
-                                    if not ((piece.x-move_x,piece.y-move_y) in whiteSquaresOc or piece.x-move_x <= 0 or piece.y-move_y <= 0):
-                                        screen.blit(dotG,((piece.x-move_x)*width/boardSize,(piece.y-move_y)*height/boardSize))
-
-                        else:
-                            if move_mod == 's':
-                                if piece.start:
-                                    if (piece.x-move_x,piece.y-move_y) not in blackSquaresOc and (piece.x-move_x,piece.y-move_y) not in whiteSquaresOc and piece.y-move_y >= 0:
-                                        screen.blit(dotG, ((piece.x-move_x)*width/boardSize,(piece.y-move_y)*height/boardSize))
-                            elif move_mod == 'c':
-                                if (piece.x-move_x, piece.y-move_y) in blackSquaresOc and piece.y-move_y >= 0 and piece.x-move_x >= 0:
-                                    screen.blit(dotG, ((piece.x-move_x)*width/boardSize,
-                                                       (piece.y-move_y)*height/boardSize))
-                                if (piece.x+move_x, piece.y-move_y) in blackSquaresOc and piece.y-move_y >= 0 and piece.x+move_x < 8:
-                                    screen.blit(dotG, ((piece.x+move_x)*width/boardSize,
-                                                       (piece.y-move_y)*height/boardSize))
-                            else:
-                                if (piece.x-move_x,piece.y-move_y) not in blackSquaresOc and (piece.x-move_x,piece.y-move_y) not in whiteSquaresOc:
-                                    screen.blit(dotG, ((piece.x-move_x)*width/boardSize,
-                                                       (piece.y-move_y)*height/boardSize))
-
+        for piece in blackPieces:
+            piece.getMoves(screen, blackSquaresOc, whiteSquaresOc)
+        for piece in whitePieces:
+            piece.getMoves(screen, blackSquaresOc, whiteSquaresOc)
 
         pygame.display.flip()
+
+
 
 if __name__ == "__main__":
     # pdb.set_trace()
