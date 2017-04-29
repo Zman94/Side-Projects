@@ -168,29 +168,29 @@ def main():
         for x in range(BOARDSIZE):
             darkSquare = not darkSquare
             for y in range(BOARDSIZE):
-                if x*WIDTH/BOARDSIZE < mouse_x and (x+1)*width/BOARDSIZE > mouse_x and y*HEIGHT/BOARDSIZE < mouse_y and (y+1)*height/BOARDSIZE > mouse_y and mouse_x != -1 and highlightSquare:
-                    pygame.draw.rect(screen, (131, 151, 106), [WIDTH/BOARDSIZE*x, HEIGHT/BOARDSIZE*y, width/BOARDSIZE, height/BOARDSIZE])
+                if x*WIDTH/BOARDSIZE < mouse_x and (x+1)*WIDTH/BOARDSIZE > mouse_x and y*HEIGHT/BOARDSIZE < mouse_y and (y+1)*HEIGHT/BOARDSIZE > mouse_y and mouse_x != -1 and highlightSquare:
+                    pygame.draw.rect(screen, (131, 151, 106), [WIDTH/BOARDSIZE*x, HEIGHT/BOARDSIZE*y, WIDTH/BOARDSIZE, HEIGHT/BOARDSIZE])
                     darkSquare = not darkSquare
 
                 elif darkSquare:
-                    pygame.draw.rect(screen, (191, 136, 99), [WIDTH/BOARDSIZE*x, HEIGHT/BOARDSIZE*y, width/BOARDSIZE, height/BOARDSIZE])
+                    pygame.draw.rect(screen, (191, 136, 99), [WIDTH/BOARDSIZE*x, HEIGHT/BOARDSIZE*y, WIDTH/BOARDSIZE, HEIGHT/BOARDSIZE])
                     darkSquare = False
                 else:
-                    pygame.draw.rect(screen, (240, 217, 181), [WIDTH/BOARDSIZE*x, HEIGHT/BOARDSIZE*y, width/BOARDSIZE, height/BOARDSIZE])
+                    pygame.draw.rect(screen, (240, 217, 181), [WIDTH/BOARDSIZE*x, HEIGHT/BOARDSIZE*y, WIDTH/BOARDSIZE, HEIGHT/BOARDSIZE])
                     darkSquare = True
 
         #Test to see if area clicked should be highlighted. Based on occupied square by player
         highlightSquare = False
         if not whiteTurn:
             for piece in range(len(blackPieces)):
-                if blackPieces[piece].x*WIDTH/BOARDSIZE < mouse_x and (blackPieces[piece].x+1)*width/BOARDSIZE > mouse_x and blackPieces[piece].y*HEIGHT/BOARDSIZE < mouse_y and (blackPieces[piece].y+1)*height/BOARDSIZE > mouse_y:
+                if blackPieces[piece].x*WIDTH/BOARDSIZE < mouse_x and (blackPieces[piece].x+1)*WIDTH/BOARDSIZE > mouse_x and blackPieces[piece].y*HEIGHT/BOARDSIZE < mouse_y and (blackPieces[piece].y+1)*HEIGHT/BOARDSIZE > mouse_y:
                     highlightSquare = True
                     blackPieces[piece].enabled = True
                 else:
                     blackPieces[piece].enabled = False
         else:
             for piece in range(len(whitePieces)):
-                if whitePieces[piece].x*WIDTH/BOARDSIZE < mouse_x and (whitePieces[piece].x+1)*width/BOARDSIZE > mouse_x and whitePieces[piece].y*HEIGHT/BOARDSIZE < mouse_y and (whitePieces[piece].y+1)*height/BOARDSIZE > mouse_y:
+                if whitePieces[piece].x*WIDTH/BOARDSIZE < mouse_x and (whitePieces[piece].x+1)*WIDTH/BOARDSIZE > mouse_x and whitePieces[piece].y*HEIGHT/BOARDSIZE < mouse_y and (whitePieces[piece].y+1)*HEIGHT/BOARDSIZE > mouse_y:
                     highlightSquare = True
                     whitePieces[piece].enabled = True
                 else:
